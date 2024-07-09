@@ -43,7 +43,7 @@ $(document).ready(function(){
             $("#msg").html("Log in successful!").css("color", "green");
         },
         'error':function() {
-            $("#msg2").html("An error occurred. Please try again.").css("color", "red");
+            $("#msg").html("An error occurred. Please try again.").css("color", "red");
         }
     }); 
     }else {

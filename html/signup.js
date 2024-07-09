@@ -95,7 +95,7 @@ $("#SignupForm").submit(function(event) {
             }
         if (isValid) {
             $.ajax({
-                type: "POST",
+                type:"POST",
                 url: "signup.php",
                 data: $("#SignupForm").serialize(),
                 success: function(response) {
