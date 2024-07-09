@@ -1,0 +1,65 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightcyan;
+}
+.wrapper{
+    width: 550px;
+    height: 550px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+}
+h1{
+    width: 60%;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: blue;
+}
+form {
+    width: 80%;
+    text-align: left; 
+}
+#psw-container{
+    display:flex;
+}
+#button{
+    color: ghostwhite;
+    background-color: grey;
+}
+#button:hover{
+    border-color: green;
+}
+.half {
+    width: 50%;
+    height: 100%;
+}
+
+.left-half {
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    background: linear-gradient(to bottom, beige, lightgreen);
+}
+.right-half {
+    background-image: url('./background.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.tgl{
+    cursor: pointer;
+}
+.error {
+    color: red;
+    font-size: 0.8em;
+}
+.valid{
+    color:green;
+}
+.invalid{
+    color:red;
+}

@@ -1,0 +1,68 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightcyan;
+}
+.wrapper{
+    width: 550px;
+    height: 550px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+}
+#password-container{
+    display:flex;
+}
+.half {
+    width: 50%;
+    height: 100%;
+}
+
+.left-half {
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    background: linear-gradient(to bottom, beige, lightgreen);
+}
+
+.right-half {
+    background-image: url('./images.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    /* background: linear-gradient(to bottom, lightgreen, beige); */
+}
+h1{
+    width: 80%;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: blue;
+}
+form {
+    width: 80%;
+    text-align: left; 
+}
+#button{
+    color: ghostwhite;
+    background-color: grey;
+}
+#button:hover{
+    border-color: green;
+}
+.message {
+    font-size: 20px;
+    text-align: center;
+    margin-top: 10px;
+}
+.error-message {
+    color: red;
+}
+.success-message {
+    color: green;
+}
+
+
