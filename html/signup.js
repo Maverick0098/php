@@ -18,7 +18,7 @@ $(document).ready(function() {
     $(this).text(type === 'password' ? '👁️' : '🔒');
   });
 
-$("#p").on("keyup",function() {
+function validatePassword() {
     var password = $("#p").val();
     var validity = true;
     if(password.length >= 8) {
@@ -56,7 +56,10 @@ $("#p").on("keyup",function() {
     } else {
         $("#perror").removeClass("valid").addClass("invalid").text("Password is invalid");
     }
-});
+    return validity;
+}
+
+$("#p").on("keyup", validatePassword);
 
 
 $("#cp").on('keyup', function(){
@@ -70,39 +73,43 @@ $("#cp").on('keyup', function(){
 });
 
 $("#SignupForm").submit(function(event) {
-    event.preventDefault();
-    var isValid = true;
-
-    $('input').each(function() {
-        if ($(this).val() === '') {
-            isValid = false;
-            $(this).next('.error').text('This field is required.');
-        } else {
-            $(this).next('.error').text('');
-        }
-    });
-    var password = $("#p").val();
-    var confirmPassword = $("#cp").val();
-    if (password !== confirmPassword) {
-            isValid = false;
-            $("#cp").next('.error').text('Passwords do not match!');
-        } else {
-            $("#cp").next('.error').text('');
-        }
-    if (isValid) {
-        $.ajax({
-            type: "POST",
-            url: "signup.php",
-            data: $("#SignupForm").serialize(),
-            success: function(response) {
-                $("#msg2").html("Sign up successful!").css("color", "green");
-            },
-            error: function() {
-                $("#msg2").html("An error occurred. Please try again.").css("color", "red");
+    if(validatePassword()) {
+        event.preventDefault();
+        var isValid = true;
+    
+        $('input').each(function() {
+            if ($(this).val() === '') {
+                isValid = false;
+                $(this).next('.error').text('This field is required.');
+            } else {
+                $(this).next('.error').text('');
             }
         });
-    }else {
-        $("#msg2").html("Please fix the errors above.").css("color", "red");
+        var password = $("#p").val();
+        var confirmPassword = $("#cp").val();
+        if (password !== confirmPassword) {
+                isValid = false;
+                $("#cp").next('.error').text('Passwords do not match!');
+            } else {
+                $("#cp").next('.error').text('');
+            }
+        if (isValid) {
+            $.ajax({
+                type: "POST",
+                url: "signup.php",
+                data: $("#SignupForm").serialize(),
+                success: function(response) {
+                    $("#msg2").html("Sign up successful!").css("color", "green");
+                },
+                error: function() {
+                    $("#msg2").html("An error occurred. Please try again.").css("color", "red");
+                }
+            });
+        }else {
+            $("#msg2").html("Please fix the errors above.").css("color", "red");
+        }
+    }else{
+        alert("Password does not meet the criteria.");
     }
 });
 });
