@@ -96,9 +96,10 @@ $("#SignupForm").submit(function(event) {
         if (isValid) {
             $.ajax({
                 type:"POST",
-                url: "signup.php",
+                url: "signup-action.php",
                 data: $("#SignupForm").serialize(),
                 success: function(response) {
+                    console.log(response);
                     $("#msg2").html("Sign up successful!").css("color", "green");
                 },
                 error: function() {

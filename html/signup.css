@@ -5,10 +5,12 @@ html, body {
     justify-content: center;
     align-items: center;
     background-color: lightcyan;
-}
+    /* background-image: url('./background.jpeg');
+    background-size: cover;  */
+} 
 .wrapper{
     width: 550px;
-    height: 550px;
+    height: 600px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -32,6 +34,7 @@ form {
 }
 #button:hover{
     border-color: green;
+    cursor: pointer;
 }
 .half {
     width: 50%;
@@ -40,7 +43,8 @@ form {
 
 .left-half {
     justify-content: center;
-    align-items: center;
+    /* align-items: center; */
+    align-content: center;
     padding: 20px;
     box-sizing: border-box;
     background: linear-gradient(to bottom, beige, lightgreen);
@@ -62,4 +66,7 @@ form {
 }
 .invalid{
     color:red;
+}
+#lg{
+    width:max-content;
 }

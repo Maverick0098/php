@@ -36,7 +36,7 @@ $(document).ready(function(){
     }
     if(isValid){
     $.ajax({
-        'url':"loginsucess.php",
+        'url':"login-action.php",
         'method':"POST",
         'data': $("#loginForm").serialize(),
         'success':function(response) {
