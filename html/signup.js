@@ -72,6 +72,26 @@ $("#cp").on('keyup', function(){
     }
 });
 
+$("#email").on('blur', function(){
+    $.ajax({
+        method:"POST",
+        url: "email-unique-action.php",
+        data: { email : $('#email').val()},
+        success: function(response) {
+            console.log( typeof response, response);
+            let parseJson = JSON.parse(response)
+            console.log(parseJson);
+            if(parseJson.status===200){
+            $("#msg2").html(parseJson.msg).css("color", "red");
+            $('#button').attr("disabled", "disabled");
+            }
+        },
+        error: function(){
+            $("#msg2").html("An error occurred. Please try again.").css("color", "red");
+        }
+    })
+});
+
 $("#SignupForm").submit(function(event) {
     if(validatePassword()) {
         event.preventDefault();
@@ -100,7 +120,7 @@ $("#SignupForm").submit(function(event) {
                 data: $("#SignupForm").serialize(),
                 success: function(response) {
                     console.log(response);
-                    $("#msg2").html("Sign up successful!").css("color", "green");
+                    $("#msg2").html(response).css("color", "green");
                 },
                 error: function() {
                     $("#msg2").html("An error occurred. Please try again.").css("color", "red");

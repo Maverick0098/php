@@ -43,7 +43,7 @@
                <br/>
                <input type="submit" value="Signup" id="button">
                <p id="msg2" class="message"></p>
-               <p id="lg">Already have an account? <a href="login.html">Login</a></p>
+               <p id="lg">Already have an account? <a href="login.php">Login</a></p>
             </form>
         </div>
         <div class="half right-half"></div>

@@ -30,6 +30,7 @@
                 <br/>
                 <input type="submit" value="Login" id="button">
                 <p id="msg" class="message"></p>
+                <p id="lg">Don't have an account? <a href="signup.php">SignUp</a></p>
             </form>
         </div>
         <div class="half right-half"></div>
