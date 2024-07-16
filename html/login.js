@@ -25,29 +25,29 @@ togglePassword.addEventListener('click',function(){
 $(document).ready(function(){
    $("#loginForm").submit(function(event){
     event.preventDefault();
-    var isValid = false;
+    // var isValid = false;
 
-    var eid = $("#email").val();
-    var password = $("#p").val();
-    if (eid === 'arijitseal71@gmail.com' && password === 'Arijit@123') {
-        isValid=true;
-    }else{
-        isValid=false;
-    }
-    if(isValid){
+    // var eid = $("#email").val();
+    // var password = $("#p").val();
+    // if (eid === 'arijitseal71@gmail.com' && password === 'Arijit@123') {
+    //     isValid=true;
+    // }else{
+    //     isValid=false;
+    // }
+    // if(isValid){
     $.ajax({
         'url':"login-action.php",
         'method':"POST",
         'data': $("#loginForm").serialize(),
         'success':function(response) {
-            $("#msg").html("Log in successful!").css("color", "green");
+            $("#msg").html(response).css("color", "green");
         },
         'error':function() {
             $("#msg").html("An error occurred. Please try again.").css("color", "red");
         }
     }); 
-    }else {
-        $("#msg").html("Invalid ID or Password.").css("color", "red");
-    }
+    // }else {
+    //     $("#msg").html("Invalid ID or Password.").css("color", "red");
+    // }
 });
 });
