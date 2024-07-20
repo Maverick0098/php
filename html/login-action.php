@@ -1,4 +1,5 @@
 <?php
+session_start();
 // print_r($_POST);
 // die();
 include 'connection.php';
@@ -23,18 +24,29 @@ function verifyLogin($email,$pass){
   $result=mysqli_query($conn,$sql);
 
   if(mysqli_num_rows($result)==0){
-    $status="Invalid Email";
-  }else{
+    $response = [
+      'status'=> 400,
+      'msg'=> "Invalid email"
+  ];
+  } else {
     $row=mysqli_fetch_assoc($result);
     $hashed_password = $row['password'];
 
     if(password_verify($pass,$hashed_password)){
-        $status="Login successfull";
+      $response = [
+        'status'=> 200,
+        'msg'=> "Login Successfull"
+    ];
+      $_SESSION["email"] = $email;
+      // header("location:profile.php");
     }else{
-        $status="Invalid password";
+      $response = [
+        'status'=> 400,
+        'msg'=> "Invalid Password"
+    ];
     }
   }
   mysqli_close($conn);
-  echo $status;
+  return json_encode($response);
 }
 ?>

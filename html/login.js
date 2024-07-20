@@ -40,7 +40,15 @@ $(document).ready(function(){
         'method':"POST",
         'data': $("#loginForm").serialize(),
         'success':function(response) {
-            $("#msg").html(response).css("color", "green");
+            let parseJson = JSON.parse(response);
+            console.log(parseJson);
+            if(parseJson.status===400){
+                $("#msg").html(parseJson.msg).css("color", "red");
+            }
+            else{
+                $("#msg").html(parseJson.msg).css("color", "green");
+                window.location.href = "http://localhost/php/html/profile.php";
+            }
         },
         'error':function() {
             $("#msg").html("An error occurred. Please try again.").css("color", "red");
