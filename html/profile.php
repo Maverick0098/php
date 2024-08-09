@@ -55,6 +55,7 @@ if($result2){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="profile.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="form-container">
@@ -212,7 +213,7 @@ if($result2){
             </br>
             </br>
             <div id="final">
-                <input type="submit" value="Save" id="Save" class="btn-pink">
+                <input type="submit" value="Save" id="save" name="save" class="btn-pink">
             </div>
             <div id="error-message"></div>
         </div>

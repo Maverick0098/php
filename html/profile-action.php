@@ -94,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             if (mysqli_query($conn, $query)) {
                 // echo "Profile updated successfully.";
                 $response['success'] = true;
-                $response['message'] = "Profile updated successfully.";
+                $response['message'] .= "Profile updated successfully.<br>";
             } else {
                 // echo "Error: Could not execute the query. " . mysqli_error($conn);
                 $response['message'] .= "Error: Could not execute the query. " . mysqli_error($conn);
