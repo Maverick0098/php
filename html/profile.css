@@ -57,7 +57,7 @@ html, body {
     gap:5px;
 }
 #pic{
-    background-color: greenyellow;
+    /* background-color: greenyellow; */
     flex-wrap: wrap;
     display: flex;
     border-radius: 70%;
@@ -155,3 +155,9 @@ html, body {
     display: flex;
     justify-content: flex-end;
   }
+  #pic img{
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+ }
+  
