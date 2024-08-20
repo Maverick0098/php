@@ -25,7 +25,7 @@ $result2 = mysqli_query($conn,$query2);
 if($result2){
     $row2 = mysqli_fetch_assoc($result2);
 }
-
+// var_dump($row2);
 ?>
 
 <!-- <!DOCTYPE html>
@@ -99,21 +99,22 @@ if($result2){
                     ?> </div>
                 <div id="bx5">
                     <label for="dob">D.O.B : </label>
-                    <?php if(!isset($row2['dob'])){
-                        echo ' <input type="date" id="dob" name="dob"> ';
-                    }else{
-                        echo '<span id="bx5">'.$row2['dob'].'</span>';
-                    }
-                    ?> </div>
+                    <?php if(!isset($row2['dob'])){ ;?>
+                        <input type="date" id="dob" name="dob" class="form-control"> 
+                    <?php }else{ ?>
+                        <!-- <span id="bx5">'.$row2['dob'].'</span> -->
+                        <input type="date" id="dob" name="dob" class="form-control" value="<?php echo $row2['dob'] ?? ''; ?>" readonly>
+                    <?php } ?>
+                    </div>
                     <div id="bx6">
                     <label for="tarea">Address : </label>
                     <!-- <textarea id="tarea" name="tarea" rows="1" cols="70"></textarea></div> -->
-                    <?php if(!isset($row2['address'])){
-                        echo ' <textarea id="tarea" name="tarea" rows="1" cols="70"></textarea> ';
-                    }else{
-                        echo '<span id="bx6">'.$row2['address'].'</span>';
-                    }
-                    ?> </div>
+                    <?php if(!isset($row2['address'])){ ;?>
+                          <textarea id="tarea" name="tarea" rows="1" cols="70" class="form-control"></textarea>
+                    <?php }else{ ?>
+                          <textarea id="tarea" name="tarea" class="form-control" rows="1" cols="70" readonly> <?php echo $row2['address'] ?? ''; ?></textarea>
+                    <?php } ?>
+                    </div>
                 </div>
             </div>
             </br>
@@ -125,31 +126,29 @@ if($result2){
                         <div class="bx7">
                         <h4>Height: </h4>
                         <!-- <input type="number" id="height1" name="height1"> -->
-                        <?php if(!isset($row2['height_ft'])){
-                        echo ' <input type="number" id="height1" name="height1"> ';
-                        }else{
-                        echo '<span id="bx7">'.$row2['height_ft'].'</span>';
-                        }
-                        ?>
+                        <?php if(!isset($row2['height_ft'])){ ;?>
+                              <input type="number" id="height1" class="form-control" name="height1"> 
+                        <?php }else{ ?>
+                            <input type="number" id="height1" name="height1" class="form-control" value="<?php echo $row2['height_ft'] ?? ''; ?>" readonly>
+                        <?php } ?>
                         <label for="height1">feet </label>
                         <!-- <input type="number" id="height2" name="height2"> -->
-                        <?php if(!isset($row2['height_in'])){
-                        echo ' <input type="number" id="height2" name="height2"> ';
-                        }else{
-                        echo '<span id="bx7">'.$row2['height_in'].'</span>';
-                        }
-                        ?>
+                        <?php if(!isset($row2['height_in'])){ ;?>
+                              <input type="number" id="height2" class="form-control" name="height2">
+                        <?php }else{ ?>
+                            <input type="number" id="height2" name="height2" class="form-control" value="<?php echo $row2['height_in'] ?? ''; ?>" readonly>
+                        <?php } ?>
                         <label for="height2">in </label></div>
 
                         <div class="bx7">
                             <h4>Weight: </h4>
                             <!-- <input type="number" id="weight1" name="weight1"> -->
-                            <?php if(!isset($row2['weight'])){
-                            echo ' <input type="number" id="weight1" name="weight1"> ';
-                            }else{
-                            echo '<span id="bx7">'.$row2['weight'].'</span>';
-                            }
-                            ?>
+                            <?php if(!isset($row2['weight'])){ ;?>
+                                 <input type="number" id="weight1" class="form-control" name="weight1"> 
+                            <?php }else{ ?>
+                                 <input type="number" id="weight1" name="weight1" class="form-control" value="<?php echo $row2['weight'] ?? ''; ?>" readonly>
+                            <?php } ?>
+                               
                             <label for="weight1">lbs </label></div>
                           
                     </div>      
@@ -183,44 +182,58 @@ if($result2){
                         <div id="b4">
                             <label for="pno">Phone Number : </label>
                             <!-- <input type="number" id="pno" name="pno" placeholder="123456789"></div> -->
-                            <?php if(!isset($row2['phnumber'])){
-                            echo ' <input type="text" id="pno" name="pno" placeholder="123456789"> ';
-                            }else{
-                            echo '<span id="b4">'.$row2['phnumber'].'</span>';
-                            }
-                            ?></div>
+                            <?php if(!isset($row2['phnumber'])){ ;?>
+                                <input type="tel" id="pno" class="form-control" name="pno" placeholder="123456789">
+                            <?php }else{ ?>
+                                <input type="tel" id="pno" name="pno" class="form-control" value="<?php echo $row2['phnumber'] ?? ''; ?>" readonly>
+                            <?php } ?>
+                            </div>
                         <div id="b5">
                             <label for="blood">Blood Group : </label>
                             <!-- <input type="text" id="blood" name="bg" placeholder="ex: A+"></div> -->
-                            <?php if(!isset($row2['bloodgroup'])){
-                            echo ' <input type="text" id="blood" name="bg" placeholder="ex: A+"> ';
-                            }else{
-                            echo '<span id="b5">'.$row2['bloodgroup'].'</span>';
-                            }
-                            ?></div>
+                            <?php if(!isset($row2['bloodgroup'])){ ;?>
+                                <input type="text" id="blood" name="bg" class="form-control" placeholder="ex: A+">
+                            <?php }else{ ?>
+                                <input type="text" id="blood" name="bg" class="form-control" value="<?php echo $row2['bloodgroup'] ?? ''; ?>" readonly>
+                            <?php } ?>
+                            </div>
                         <div id="b6">
                             <label for="dig">Designation : </label>
                             <!-- <input type="text" id="dig" name="dig" placeholder="ex: System Engineer"></div> -->
-                            <?php if(!isset($row2['designation'])){
-                            echo ' <input type="text" id="dig" name="dig" placeholder="ex: System Engineer"> ';
-                            }else{
-                            echo '<span id="b6">'.$row2['designation'].'</span>';
-                            }
-                            ?></div>
+                            <?php if(!isset($row2['designation'])){ ;?>
+                                 <input type="text" id="dig" name="dig" class="form-control" placeholder="ex: System Engineer">
+                            <?php }else{ ?>
+                                <input type="text" id="dig" name="dig" class="form-control" value="<?php echo $row2['designation'] ?? ''; ?>" readonly>
+                            <?php } ?>
+                            </div>
                     </div>
                 
                 </div>
             </br>
             </br>
-            <div id="final">
+            <!-- <div id="final">
                 <input type="submit" value="Save" id="save" name="save" class="btn-pink">
-            </div>
+            </div> -->
+            <?php if(!isset($row2)){
+                        echo '
+                        <div id="final">
+                        <input id="save" type="submit" class="btn-pink" value="Save" name="save">
+                        </div>';
+                    }else{
+                        //  edit button added 
+                        echo '
+                        <div id="final">
+                        <input type="submit" name="save" value="Save" id="save" class="btn-pink" style="display: none;">
+                        <input type="button" name="edit" id="edit" value="Edit" class="btn-pink">
+                        </div>';
+                    }
+            ?>   
             <div id="error-message"></div>
         </div>
         <div class="box" id="picture">
             <div id="pic">
                 <!-- <input type="file" name="profile_pic" id="file" class="file-input"> -->
-                <?php if(!isset($row2['profilepic'])){
+                <?php if(!isset($row2['profilepic']) || empty($row2['profilepic'])){
                             echo ' <input type="file" name="profile_pic" id="file" class="file-input"> ';
                             }else{
                             echo '<img src="http://localhost/php/html/uploads/'.trim($row2['profilepic']).'"/>';

@@ -16,7 +16,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $maxFileSize = 1 * 1024 * 1024;
     $allowedTypes = ['image/jpeg'];
     $isValid = true;
-    $errorMessage = '';
+    $profilePicturePath = '';
+
+    $email = $_SESSION["email"];
+    $query = "SELECT ID FROM users WHERE email ='".$email."'";
+    $result = mysqli_query($conn, $query);
+    $user_id = mysqli_fetch_assoc($result);
 
     if(count($_FILES) && $_FILES['profile_pic']['error']===0){
 
@@ -51,16 +56,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                 $isValid = false;
             }
         }
-    }  else {
-        $errorMessage .= "Error: There was a problem with the file upload.<br>";
-        $isValid = false;
-    }
-    
-    if ($isValid) {
-        $email = $_SESSION["email"];
-        $query = "SELECT ID FROM users WHERE email ='".$email."'";
-        $result = mysqli_query($conn, $query);
-        $user_id = mysqli_fetch_assoc($result);
+    }  
+
+        // var_dump($user_id);
     
         // $profilePicture = time().'-'.$_FILES['profile_pic']['name'];
         $nickname = $_POST["nick"];
@@ -77,21 +75,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         $deg=$_POST["dig"];
         $bio=$_POST["bio"];
 
-        // $query2="SELECT user_id from profile where user_id='".$user_id['user_id']."'";
-        // $check=mysqli_query($conn,$query);
-        // $isexist = mysql_num_rows($check);
+        $query2="SELECT user_id from profile where user_id='".$user_id['ID']."'";
+        $check=mysqli_query($conn,$query2);
+        $isexist = mysqli_num_rows($check);
         
-        
-        // if($isexist===0){
-            $query = "INSERT INTO `profile` 
-                    (`user_id`, `nickname`, `dob`, `address`, `weight`, `height_ft`, `height_in`, `username`, `countryname`, `gender`, `phnumber`, `bloodgroup`, `designation`, `profilepic`, `bio`) 
-                    VALUES 
-                    ('".$user_id["ID"]."', '".$nickname."', '".$dob."', '".$address."', '".$weight."', '".$feet."', '".$in."', '".$username."', '".$country."', '".$gender."', ".$ph.", '".$bg."', '".$deg."', '".$profilePicturePath."', '".$bio."')";
+        // var_dump($isexist);
+        if($isexist > 0){
+            $uquery = "UPDATE profile SET ";
+                    if($profilePicturePath)  $uquery .= "profile_pic = '".($profilePicturePath ?? "")."',"; 
+                        $uquery .= " dob = '$dob'".","; 
+                        $uquery .= " phnumber = '$ph', 
+                        address = '$address', 
+                        height_ft = '$feet',
+                        height_in = '$in',
+                        weight= '$weight',
+                        nickname = '$nickname',
+                        bloodgroup = '$bg',
+                        designation = '$deg'
+                        WHERE user_id = '".$user_id['ID']."'";
+            
+            } else {
+                    $query = "INSERT INTO `profile` 
+                            (`user_id`, `nickname`, `dob`, `address`, `weight`, `height_ft`, `height_in`, `username`, `countryname`, `gender`, `phnumber`, `bloodgroup`, `designation`, `profilepic`, `bio`) 
+                            VALUES 
+                            ('".$user_id["ID"]."', '".$nickname."', '".$dob."', '".$address."', '".$weight."', '".$feet."', '".$in."', '".$username."', '".$country."', '".$gender."', ".$ph.", '".$bg."', '".$deg."', '".$profilePicturePath."', '".$bio."')";
 
-            
-        
-            
-            if (mysqli_query($conn, $query)) {
+            }
+            // print_r($query);
+
+            $finalQuery = $isexist ? $uquery : $query;
+
+            if (mysqli_query($conn, $finalQuery)) {
                 // echo "Profile updated successfully.";
                 $response['success'] = true;
                 $response['message'] .= "Profile updated successfully.<br>";
@@ -99,11 +113,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                 // echo "Error: Could not execute the query. " . mysqli_error($conn);
                 $response['message'] .= "Error: Could not execute the query. " . mysqli_error($conn);
             }
-        // }
-    } else {
-        echo json_encode($response);
-    }
+            echo json_encode($response);
 }
+   
 
 
 
