@@ -4,257 +4,160 @@ include 'connection.php';
 if(!isset($_SESSION["email"])){
     header("location:login.php");
 }
-// echo "Profile page";
-$email=$_SESSION["email"];
-$query = "SELECT fname,lname,email From users where email= '$email' ";
-$result = mysqli_query($conn,$query);
-if($result){
-    $row=mysqli_fetch_assoc($result);
-    // print_r($row);
-    // echo "Welcome, ".$row['fname'].' '.$row['lname'];
-    $email=$row['email'];
-    $fname=$row['fname'];
-    $lname=$row['lname'];
-}
 
+$email = $_SESSION["email"];
+
+// Data fetching from user table
+$query = "SELECT fname, lname, email FROM users WHERE email = '$email'";
+$result = mysqli_query($conn, $query);
+$row = mysqli_fetch_assoc($result);
+
+// Data fetching from profile table
 $query = "SELECT ID FROM users WHERE email = '$email'";
-$userid = mysqli_query($conn,$query);
+$userid = mysqli_query($conn, $query);
 $user_id = mysqli_fetch_assoc($userid);
-$query2 = "SELECT * FROM profile WHERE user_id = '".$user_id["ID"]."'";
-$result2 = mysqli_query($conn,$query2);
-if($result2){
-    $row2 = mysqli_fetch_assoc($result2);
-}
+$query2 = "SELECT profile_pic, datemax, phone, address, city, state FROM profile WHERE user_id = '".$user_id["ID"]."'";
+$result2 = mysqli_query($conn, $query2);
+$row2 = mysqli_fetch_assoc($result2);
 // var_dump($row2);
+
 ?>
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
-</head>
-<body>
-    <form action="profile-action.php" method="post" enctype="multipart/form-data">
-        <label>Upload Pic</label>
-        <input type = "file" name="profile_pic">
-        <input type="submit" value="Upload">
-    </form>
-
-    <form action="logout.php" method="get">
-    <input type="submit" value="Log Out">
-    </form>
-</body>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
     <link rel="stylesheet" href="profile.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <title>Profile</title>
 </head>
 <body>
-    <div class="form-container">
-    <div id="logout">
-    <form action="logout.php" method="get">
-    <button class="btn-pink" >Logout</button>
+<div class="form-container">
+    <!-- Logout form -->
+    <form action="logout.php" method="get" class="logoutform" id="logoutform">
+        <input type="submit" value="Logout">
     </form>
-    </div>
-    </br>
-    <!-- <form action="profile-action.php" method="post" enctype="multipart/form-data" class="container"> -->
-    <form  method="post" enctype="multipart/form-data" class="container" id="profileform"> 
-        <div class="box" id="data">
-            <h1>My Account</h1>
-            </br>
-            </br>
-            <div class="form1">
-                <b style="color: red;">Your Basic Information:</b>
-                <div class="personalinfo" >
-                <div id="bx1">
-                    <label for="email">Email Address : </label>
-                    <!-- <input type="Email" id="email" name="email" placeholder="Email" style="display: none"> -->
-                    <?php echo $email;?>
-                </div>
-                <div id="bx2">
-                    <label for="fname">First Name : </label>
-                    <!-- <input type="text" id="fname" name="fname" placeholder="First Name" style="display: none"> -->
-                    <?php echo $fname;?>
-                </div>
-                <div id="bx3">
-                    <label for="lname">Last Name : </label>
-                    <!-- <input type="text" id="lname" name="lname" placeholder="Last Name" style="display:none"> -->
-                    <?php echo $lname;?>
-                </div>
-                <div id="bx4">
-                    <label for="nick">Nick Name : </label>
-                    <?php if(!isset($row2['nickname'])){
-                        echo ' <input type="text" id="nick" name="nick" placeholder="Nick Name"> ';
-                    }else{
-                        echo '<span id="bx4">'.$row2['nickname'].'</span>';
-                    }
-                    ?> </div>
-                <div id="bx5">
-                    <label for="dob">D.O.B : </label>
-                    <?php if(!isset($row2['dob'])){ ;?>
-                        <input type="date" id="dob" name="dob" class="form-control"> 
-                    <?php }else{ ?>
-                        <!-- <span id="bx5">'.$row2['dob'].'</span> -->
-                        <input type="date" id="dob" name="dob" class="form-control" value="<?php echo $row2['dob'] ?? ''; ?>" readonly>
-                    <?php } ?>
-                    </div>
-                    <div id="bx6">
-                    <label for="tarea">Address : </label>
-                    <!-- <textarea id="tarea" name="tarea" rows="1" cols="70"></textarea></div> -->
-                    <?php if(!isset($row2['address'])){ ;?>
-                          <textarea id="tarea" name="tarea" rows="1" cols="70" class="form-control"></textarea>
-                    <?php }else{ ?>
-                          <textarea id="tarea" name="tarea" class="form-control" rows="1" cols="70" readonly> <?php echo $row2['address'] ?? ''; ?></textarea>
-                    <?php } ?>
-                    </div>
-                </div>
-            </div>
-            </br>
-            </br>
-            </br>
-            <div class="form1">
-                    <b style="color: red;">Body Information:</b>
-                    <div class="personalinfo" >
-                        <div class="bx7">
-                        <h4>Height: </h4>
-                        <!-- <input type="number" id="height1" name="height1"> -->
-                        <?php if(!isset($row2['height_ft'])){ ;?>
-                              <input type="number" id="height1" class="form-control" name="height1"> 
-                        <?php }else{ ?>
-                            <input type="number" id="height1" name="height1" class="form-control" value="<?php echo $row2['height_ft'] ?? ''; ?>" readonly>
-                        <?php } ?>
-                        <label for="height1">feet </label>
-                        <!-- <input type="number" id="height2" name="height2"> -->
-                        <?php if(!isset($row2['height_in'])){ ;?>
-                              <input type="number" id="height2" class="form-control" name="height2">
-                        <?php }else{ ?>
-                            <input type="number" id="height2" name="height2" class="form-control" value="<?php echo $row2['height_in'] ?? ''; ?>" readonly>
-                        <?php } ?>
-                        <label for="height2">in </label></div>
 
-                        <div class="bx7">
-                            <h4>Weight: </h4>
-                            <!-- <input type="number" id="weight1" name="weight1"> -->
-                            <?php if(!isset($row2['weight'])){ ;?>
-                                 <input type="number" id="weight1" class="form-control" name="weight1"> 
-                            <?php }else{ ?>
-                                 <input type="number" id="weight1" name="weight1" class="form-control" value="<?php echo $row2['weight'] ?? ''; ?>" readonly>
-                            <?php } ?>
-                               
-                            <label for="weight1">lbs </label></div>
-                          
-                    </div>      
+    <!-- Profile form -->
+    <form method="post" enctype="multipart/form-data" class="profileform" id="profileform">
+        <!-- profile-image-section -->
+        <div class="image-part" id="image-part">
+            <label for="profile_pic">Upload Profile Picture</label>            
+            <span id="error-message"></span>
+            <?php if(!isset($row2['profile_pic']) || empty($row2['profile_pic'])){
+                        echo '<input type="file" name="profile_pic" id="profile_picture" style="display: none;">
+                        <div class="profile-image" id="profile-image"><img src="" alt="" id="profile-img"></div>';
+                     }else{
+                        echo '<input type="file" name="profile_pic" id="profile_picture" style="display: none;" disabled>';
+                        echo '<div class="profile-image" id="profile-image"><img src="./uploads/'.$row2["profile_pic"].'" alt="" id="profile-img"></div>';
+                     }
+            ?> 
+        </div>       
+        <!-- profile-info-section -->
+        <div class="info-part" id="info-part">
+            <div class="oneline">
+                <label for="fname">First Name</label>
+                <div class="start"><?php echo $row['fname']; ?></div>
             </div>
-            </br>
-            </br>
-            </br>
-            <div class="form1">
-                    <b style="color: red;">User Information:</b>
-                    <div class="personalinfo" >
-                        <div id="b1">
-                        <label for="uname">User Name : </label>
-                        <input type="name" id="uname" name="uname" placeholder="User Name"></div>
-                        <div id="b2">
-                        <label for="Country">Country Name : </label>
-                        <select name="country" id="counry">
-                            <option value="Select">Select Country</option>
-                            <option value="India">India</option>
-                            <option value="Pakistan">Pakistan</option>
-                            <option value="Bangladesh">Bangladesh</option>
-                            <option value="Nepal">Nepal</option>
-                        </select></div>
-                        <div id="b3">
-                            <label for="Gender">Gender: </label>
-                            <input type="radio" id="male" name="g" value="male">
-                            <label for="male">Male</label><br>
-                            <input type="radio" id="female" name="g" value="female">
-                            <label for="female">Female</label><br>
-                            <input type="radio" id="others" name="g" value="others">
-                            <label for="others">others</label></div>
-                        <div id="b4">
-                            <label for="pno">Phone Number : </label>
-                            <!-- <input type="number" id="pno" name="pno" placeholder="123456789"></div> -->
-                            <?php if(!isset($row2['phnumber'])){ ;?>
-                                <input type="tel" id="pno" class="form-control" name="pno" placeholder="123456789">
-                            <?php }else{ ?>
-                                <input type="tel" id="pno" name="pno" class="form-control" value="<?php echo $row2['phnumber'] ?? ''; ?>" readonly>
-                            <?php } ?>
-                            </div>
-                        <div id="b5">
-                            <label for="blood">Blood Group : </label>
-                            <!-- <input type="text" id="blood" name="bg" placeholder="ex: A+"></div> -->
-                            <?php if(!isset($row2['bloodgroup'])){ ;?>
-                                <input type="text" id="blood" name="bg" class="form-control" placeholder="ex: A+">
-                            <?php }else{ ?>
-                                <input type="text" id="blood" name="bg" class="form-control" value="<?php echo $row2['bloodgroup'] ?? ''; ?>" readonly>
-                            <?php } ?>
-                            </div>
-                        <div id="b6">
-                            <label for="dig">Designation : </label>
-                            <!-- <input type="text" id="dig" name="dig" placeholder="ex: System Engineer"></div> -->
-                            <?php if(!isset($row2['designation'])){ ;?>
-                                 <input type="text" id="dig" name="dig" class="form-control" placeholder="ex: System Engineer">
-                            <?php }else{ ?>
-                                <input type="text" id="dig" name="dig" class="form-control" value="<?php echo $row2['designation'] ?? ''; ?>" readonly>
-                            <?php } ?>
-                            </div>
-                    </div>
+            <div class="oneline">
+                <label for="lname">Last Name</label>
+                <div class="start"><?php echo $row['lname']; ?></div>
+            </div>
+            <div class="oneline email">
+                <label for="email">Email</label>
+                <div class="start"><?php echo $row['email']; ?></div>
+            </div>
+            <div class="oneline">
+                <label for="datemax">D.O.B</label>                
+                <?php if(!isset($row2['datemax'])){ ;?>
+                        <input type="date" class="form-control start" id="datemax" name="datemax" max="2014-12-31" required>
+                    <?php }else{ ?>
+                        <input type="date" class="form-control start" id="datemax" name="datemax" value="<?php echo $row2['datemax'] ?? ''; ?>" readonly>
+                   <?php  } ?>
+            </div>
+            <div class="oneline">
+                <label for="phone">Contact No</label>
+                <?php if(!isset($row2['phone'])){ ;?>
+                        <input type="tel" class="form-control start" id="phone" name="phone" required>
+                    <?php }else{ ?>
+                        <input type="tel" class="form-control start" id="phone" name="phone" value="<?php echo $row2['phone'] ?? ''; ?>" readonly>
+                <?php  } ?>               
+            </div>
+            <div class="oneline">
+                <label for="address">Address</label>
+                <?php if(!isset($row2['address'])){ ;?>
+                        <textarea class="form-control start" id="address" name="address" required></textarea>
+                    <?php }else{ ?>
+                        <textarea class="form-control start" id="address" name="address" readonly><?php echo $row2['address'] ?? ''; ?></textarea>
+                <?php  } ;?>                
+            </div>
+            <div class="oneline">
+                <label for="city">City</label>
+                 <!-- working on city -->
+
+                <?php
+                    $cities = ['Kolkata', 'Bangalore', 'Indore', 'Hyderabad']; // Add more options as needed
+                    $selectedCity = isset($row2['city']) ? $row2['city'] : '';
+
+                    $disabledAttribute = isset($row2['city']) ? 'disabled' : '';
+                ?>
+                <select class="form-control start" id="city" name="city" <?= $disabledAttribute ?> required>
+                    <option value="" disabled <?= empty($selectedCity) ? 'selected' : '' ?>>Select a city</option>
+                    <?php foreach ($cities as $city): ?>
+                        <option value="<?= $city ?>" <?= $city == $selectedCity ? 'selected' : '' ?>>
+                            <?= $city ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+
+                <!--  working on city -->
+
+            </div>
+            <div class="oneline">
+                <label for="state">State</label>
+
+                <!-- working on state -->
+
+                <?php 
+                    $states = [
+                        "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", 
+                        "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", 
+                        "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", 
+                        "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", 
+                        "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"
+                    ];
+
+                    $selectedState = isset($row2['state']) ? $row2['state'] : '';
+                    $isDisabled = isset($row2['state']);
+                ?>
+                <select class="form-control start" id="state" name="state" <?= $isDisabled ? 'disabled' : 'required' ?>>
+                    <option value="" disabled <?= !$isDisabled ? 'selected' : '' ?>>Select your state</option>
+                    <?php foreach ($states as $state): ?>
+                     <option value="<?= htmlspecialchars($state) ?>" <?= $state == $selectedState ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($state) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
                 
-                </div>
-            </br>
-            </br>
-            <!-- <div id="final">
-                <input type="submit" value="Save" id="save" name="save" class="btn-pink">
-            </div> -->
+            <!-- working on state -->
+            </div>
+            <!-- working on save and edit -->
             <?php if(!isset($row2)){
-                        echo '
-                        <div id="final">
-                        <input id="save" type="submit" class="btn-pink" value="Save" name="save">
-                        </div>';
-                    }else{
+                        echo '<input type="submit" value="Save" id="save" name="save">';
+                     }else{
                         //  edit button added 
-                        echo '
-                        <div id="final">
-                        <input type="submit" name="save" value="Save" id="save" class="btn-pink" style="display: none;">
-                        <input type="button" name="edit" id="edit" value="Edit" class="btn-pink">
-                        </div>';
-                    }
-            ?>   
-            <div id="error-message"></div>
-        </div>
-        <div class="box" id="picture">
-            <div id="pic">
-                <!-- <input type="file" name="profile_pic" id="file" class="file-input"> -->
-                <?php if(!isset($row2['profilepic']) || empty($row2['profilepic'])){
-                            echo ' <input type="file" name="profile_pic" id="file" class="file-input"> ';
-                            }else{
-                            echo '<img src="http://localhost/php/html/uploads/'.trim($row2['profilepic']).'"/>';
-                            }
-                ?> 
-            </div>
-        </div>
-        <div class="box" id="bio">
-            <div id="bio-container">
-            <h2 style="color: red;">About Yourself</h2>
-            </br>
-            <textarea name="bio" class="bio-text" placeholder="Write your bio here..."></textarea>
-            <!-- <div id="b"><button type="submit" class="btn-pink">Save</button>
-                        <button type="submit" class="btn-pink">Edit</button> 
-            </div> -->
-            </div>
+                        echo'<input type="submit" value="Save" id="save" name="save" style="display: none;">';
+                        echo ' <input type="button" value="Edit" id="edit" name="edit">';
+                     }
+                    ?>
+
+            <!-- working on save and edit -->
+
+            <a href="home.php">Goto Home</a>
         </div>
     </form>
-
-    </div>
-    <script src="profile.js"></script>
+</div>
+<script src="profile.js"></script>
 </body>
 </html>
 

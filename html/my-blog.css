@@ -1,0 +1,22 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.grid-container {
+  display: grid;
+  max-width: 1200px;
+  margin: 0 auto;
+  grid-template-columns: auto auto;
+  grid-column-gap: 50px;
+  grid-row-gap: 50px;
+  border: 1px solid black;
+}
+.grid-items {
+  display: flex;
+  flex-direction: column;
+}
+.item-details {
+  display: flex;
+  gap: 2rem;
+}
